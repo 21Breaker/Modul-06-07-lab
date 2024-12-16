@@ -1,25 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Course</title>
-    <link rel="stylesheet" href="style.css">
+    <!-- Metadata about the document -->
+    <meta charset="UTF-8"> <!-- Character encoding for the document -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Responsive design settings -->
+    <title>Create Course</title> <!-- Title of the webpage -->
+    <link rel="stylesheet" href="style.css"> <!-- Link to external CSS file -->
 </head>
 <body>
-    <h1>Create a New Course</h1>
+    <h1>Create a New Course</h1> <!-- Main heading of the page -->
+    
+    <!-- Form for creating a new course -->
     <form id="create-course-form">
+        <!-- Input for course title -->
         <label for="title">Course Title:</label>
         <input type="text" id="title" name="title" required><br><br>
+        
+        <!-- Textarea for course description -->
         <label for="description">Course Description:</label>
         <textarea id="description" name="description" required></textarea><br><br>
+        
+        <!-- Submit button for the form -->
         <button type="submit">Create Course</button>
     </form>
     
-    <!-- Link to Go Back to Home Page -->
-    <a href="index.html">Back to Courses</a>
-    <a href="edit-course.html">Edit Course</a>
+    <!-- Links to navigate to other pages -->
+    <a href="index.html">Back to Courses</a> <!-- Link to go back to the home page -->
+    <a href="edit-course.html">Edit Course</a> <!-- Link to edit an existing course -->
     
-    <script src="app.js"></script>
+    <script src="app.js"></script> <!-- Link to external JavaScript file -->
 </body>
 </html>
