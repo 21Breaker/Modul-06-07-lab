@@ -37,9 +37,19 @@ if (!localStorage.getItem('courses')) {
     localStorage.setItem('courses', JSON.stringify([]));
 }
 
+// Simulated cart data in localStorage (if no cart exists, create an empty array)
+if (!localStorage.getItem('cart')) {
+    localStorage.setItem('cart', JSON.stringify([]));
+}
+
 // Get courses from localStorage
 function getCourses() {
     return JSON.parse(localStorage.getItem('courses'));
+}
+
+// Get cart from localStorage
+function getCart() {
+    return JSON.parse(localStorage.getItem('cart'));
 }
 
 // Display all courses
@@ -59,8 +69,29 @@ function displayCourses() {
                 <button onclick="editCourse(${course.id})">Edit</button>
                 <button onclick="deleteCourse(${course.id})">Delete</button>
             ` : ''}
+            ${currentUser.role === 'user' ? `
+                <button onclick="addToCart(${course.id})">Add to Cart</button>
+            ` : ''}
         `;
         coursesContainer.appendChild(courseElement);
+    });
+}
+
+// Display cart
+function displayCart() {
+    const cart = getCart();
+    const cartContainer = document.getElementById('cart-container');
+    cartContainer.innerHTML = '';
+
+    cart.forEach(course => {
+        const courseElement = document.createElement('div');
+        courseElement.classList.add('course');
+        courseElement.innerHTML = `
+            <h3>${course.title}</h3>
+            <p>${course.description}</p>
+            <button onclick="removeFromCart(${course.id})">Remove from Cart</button>
+        `;
+        cartContainer.appendChild(courseElement);
     });
 }
 
@@ -154,7 +185,35 @@ function deleteCourse(courseId) {
     }
 }
 
-// Initial rendering of courses (on the home page)
+// Add course to cart
+function addToCart(courseId) {
+    const courses = getCourses();
+    const course = courses.find(c => c.id === courseId);
+    const cart = getCart();
+
+    if (!cart.some(c => c.id === courseId)) {
+        cart.push(course);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        displayCart();
+    } else {
+        alert('Course is already in the cart');
+    }
+}
+
+// Remove course from cart
+function removeFromCart(courseId) {
+    const cart = getCart();
+    const courseIndex = cart.findIndex(c => c.id === courseId);
+
+    if (courseIndex !== -1) {
+        cart.splice(courseIndex, 1);  // Remove course from cart
+        localStorage.setItem('cart', JSON.stringify(cart));
+        displayCart();  // Re-render cart
+    }
+}
+
+// Initial rendering of courses and cart (on the home page)
 if (document.getElementById('courses-container')) {
     displayCourses();
+    displayCart();
 }
