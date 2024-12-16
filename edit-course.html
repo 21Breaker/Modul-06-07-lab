@@ -1,24 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Course</title>
-    <link rel="stylesheet" href="style.css">
+    <!-- Metadata about the document -->
+    <meta charset="UTF-8"> <!-- Character encoding for the document -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Responsive design settings -->
+    <title>Edit Course</title> <!-- Title of the webpage -->
+    <link rel="stylesheet" href="style.css"> <!-- Link to external CSS file -->
 </head>
 <body>
-    <h1>Edit Course</h1>
+    <h1>Edit Course</h1> <!-- Main heading of the page -->
+    
+    <!-- Form for editing an existing course -->
     <form id="edit-course-form">
+        <!-- Input for course title -->
         <label for="title">Course Title:</label>
         <input type="text" id="title" name="title" required><br><br>
+        
+        <!-- Textarea for course description -->
         <label for="description">Course Description:</label>
         <textarea id="description" name="description" required></textarea><br><br>
+        
+        <!-- Submit button for the form -->
         <button type="submit">Update Course</button>
     </form>
 
-    <!-- Link to Go Back to Home Page -->
-    <a href="index.html">Back to Courses</a>
+    <!-- Link to navigate back to the home page -->
+    <a href="index.html">Back to Courses</a> <!-- Link to go back to the home page -->
 
-    <script src="app.js"></script>
+    <script src="app.js"></script> <!-- Link to external JavaScript file -->
 </body>
 </html>
