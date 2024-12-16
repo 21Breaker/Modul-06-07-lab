@@ -9,35 +9,37 @@ const users = [
 
 // Handle login
 document.getElementById('login-form')?.addEventListener('submit', function(event) {
-    event.preventDefault();
+    event.preventDefault();  // Prevent the default form submission behavior
     
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
+    const username = document.getElementById('username').value;  // Get the entered username
+    const password = document.getElementById('password').value;  // Get the entered password
     
+    // Find the user with matching username and password
     const user = users.find(u => u.username === username && u.password === password);
     
     if (user) {
+        // Store the current user in localStorage and redirect to the home page
         localStorage.setItem('currentUser', JSON.stringify(user));
         window.location.href = 'index.html';
     } else {
-        alert('Invalid username or password');
+        alert('Invalid username or password');  // Show an error message if login fails
     }
 });
 
-// Get current user
+// Get current user from localStorage
 const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
-// Check if user is logged in
+// Check if user is logged in, if not redirect to login page
 if (!currentUser && window.location.pathname !== '/login.html') {
     window.location.href = 'login.html';
 }
 
-// Simulated courses data in localStorage (if no courses exist, create an empty array)
+// Initialize courses data in localStorage if not already present
 if (!localStorage.getItem('courses')) {
     localStorage.setItem('courses', JSON.stringify([]));
 }
 
-// Simulated cart data in localStorage (if no cart exists, create an empty array)
+// Initialize cart data in localStorage if not already present
 if (!localStorage.getItem('cart')) {
     localStorage.setItem('cart', JSON.stringify([]));
 }
@@ -56,7 +58,7 @@ function getCart() {
 function displayCourses() {
     const courses = getCourses();
     const coursesContainer = document.getElementById('courses-container');
-    coursesContainer.innerHTML = '';
+    coursesContainer.innerHTML = '';  // Clear the container
 
     courses.forEach(course => {
         const courseElement = document.createElement('div');
@@ -73,7 +75,7 @@ function displayCourses() {
                 <button onclick="addToCart(${course.id})">Add to Cart</button>
             ` : ''}
         `;
-        coursesContainer.appendChild(courseElement);
+        coursesContainer.appendChild(courseElement);  // Add course element to the container
     });
 }
 
@@ -81,7 +83,7 @@ function displayCourses() {
 function displayCart() {
     const cart = getCart();
     const cartContainer = document.getElementById('cart-container');
-    cartContainer.innerHTML = '';
+    cartContainer.innerHTML = '';  // Clear the container
 
     cart.forEach(course => {
         const courseElement = document.createElement('div');
@@ -91,7 +93,7 @@ function displayCart() {
             <p>${course.description}</p>
             <button onclick="removeFromCart(${course.id})">Remove from Cart</button>
         `;
-        cartContainer.appendChild(courseElement);
+        cartContainer.appendChild(courseElement);  // Add course element to the container
     });
 }
 
@@ -100,18 +102,18 @@ document.getElementById('create-course-btn')?.addEventListener('click', () => {
     if (currentUser.role === 'teacher') {
         window.location.href = 'create-course.html';  // Redirect to the Create Course page
     } else {
-        alert('Only teachers can create courses');
+        alert('Only teachers can create courses');  // Show an error message if user is not a teacher
     }
 });
 
 // Handle course creation
 if (document.getElementById('create-course-form')) {
     document.getElementById('create-course-form').addEventListener('submit', function(event) {
-        event.preventDefault();
+        event.preventDefault();  // Prevent the default form submission behavior
 
         if (currentUser.role === 'teacher') {
-            const title = document.getElementById('title').value;
-            const description = document.getElementById('description').value;
+            const title = document.getElementById('title').value;  // Get the entered course title
+            const description = document.getElementById('description').value;  // Get the entered course description
 
             const courses = getCourses();
             const newCourse = {
@@ -121,12 +123,12 @@ if (document.getElementById('create-course-form')) {
                 teacherId: currentUser.id
             };
 
-            courses.push(newCourse);
-            localStorage.setItem('courses', JSON.stringify(courses));
+            courses.push(newCourse);  // Add the new course to the courses array
+            localStorage.setItem('courses', JSON.stringify(courses));  // Save the updated courses array to localStorage
 
             window.location.href = 'index.html';  // Redirect back to the home page
         } else {
-            alert('Only teachers can create courses');
+            alert('Only teachers can create courses');  // Show an error message if user is not a teacher
         }
     });
 }
@@ -137,9 +139,9 @@ function editCourse(courseId) {
     const course = courses.find(c => c.id === courseId);
     
     if (course.teacherId === currentUser.id) {
-        window.location.href = `edit-course.html?courseId=${courseId}`;
+        window.location.href = `edit-course.html?courseId=${courseId}`;  // Redirect to the Edit Course page
     } else {
-        alert('You can only edit your own courses!');
+        alert('You can only edit your own courses!');  // Show an error message if user is not the course creator
     }
 }
 
@@ -150,22 +152,22 @@ if (document.getElementById('edit-course-form')) {
     const course = courses.find(c => c.id == courseId);
 
     if (course.teacherId === currentUser.id) {
-        document.getElementById('title').value = course.title;
-        document.getElementById('description').value = course.description;
+        document.getElementById('title').value = course.title;  // Pre-fill the course title
+        document.getElementById('description').value = course.description;  // Pre-fill the course description
 
         document.getElementById('edit-course-form').addEventListener('submit', function(event) {
-            event.preventDefault();
+            event.preventDefault();  // Prevent the default form submission behavior
 
-            course.title = document.getElementById('title').value;
-            course.description = document.getElementById('description').value;
+            course.title = document.getElementById('title').value;  // Update the course title
+            course.description = document.getElementById('description').value;  // Update the course description
 
-            localStorage.setItem('courses', JSON.stringify(courses));
+            localStorage.setItem('courses', JSON.stringify(courses));  // Save the updated courses array to localStorage
 
             window.location.href = 'index.html';  // Redirect back to the home page
         });
     } else {
-        alert('You can only edit your own courses!');
-        window.location.href = 'index.html';
+        alert('You can only edit your own courses!');  // Show an error message if user is not the course creator
+        window.location.href = 'index.html';  // Redirect back to the home page
     }
 }
 
@@ -177,11 +179,11 @@ function deleteCourse(courseId) {
     if (courses[courseIndex].teacherId === currentUser.id) {
         if (confirm('Are you sure you want to delete this course?')) {
             courses.splice(courseIndex, 1);  // Remove course from array
-            localStorage.setItem('courses', JSON.stringify(courses));
+            localStorage.setItem('courses', JSON.stringify(courses));  // Save the updated courses array to localStorage
             displayCourses();  // Re-render courses
         }
     } else {
-        alert('You can only delete your own courses!');
+        alert('You can only delete your own courses!');  // Show an error message if user is not the course creator
     }
 }
 
@@ -192,11 +194,11 @@ function addToCart(courseId) {
     const cart = getCart();
 
     if (!cart.some(c => c.id === courseId)) {
-        cart.push(course);
-        localStorage.setItem('cart', JSON.stringify(cart));
-        displayCart();
+        cart.push(course);  // Add course to cart if not already present
+        localStorage.setItem('cart', JSON.stringify(cart));  // Save the updated cart to localStorage
+        displayCart();  // Re-render cart
     } else {
-        alert('Course is already in the cart');
+        alert('Course is already in the cart');  // Show an error message if course is already in the cart
     }
 }
 
@@ -207,7 +209,7 @@ function removeFromCart(courseId) {
 
     if (courseIndex !== -1) {
         cart.splice(courseIndex, 1);  // Remove course from cart
-        localStorage.setItem('cart', JSON.stringify(cart));
+        localStorage.setItem('cart', JSON.stringify(cart));  // Save the updated cart to localStorage
         displayCart();  // Re-render cart
     }
 }
